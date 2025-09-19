@@ -1,0 +1,20 @@
+<library file="AK8FlatTreeProducer.cc">
+  <use name="FWCore/Framework"/>
+  <use name="FWCore/ParameterSet"/>
+  <use name="DataFormats/PatCandidates"/>
+  <use name="DataFormats/JetReco"/>
+  <use name="rootcore"/>
+</library>
+<library file="AK15FlatTreeProducer.cc">
+  <use name="FWCore/Framework"/>
+  <use name="FWCore/ParameterSet"/>
+  <use name="DataFormats/PatCandidates"/>
+  <use name="DataFormats/JetReco"/>
+  <use name="rootcore"/>
+</library>
+<library file="SingleTreeExtractor.cc">
+  <use name="FWCore/Framework"/>
+  <use name="FWCore/ParameterSet"/>
+  <use name="FWCore/MessageLogger"/>
+  <use name="root"/>
+</library>
