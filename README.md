@@ -6,7 +6,7 @@ The framework is configured to handle both **AK8** and **AK15** jets and automat
 ---
 ## Getting Started: Setup and Compilation
 
-Follow these steps to set up the environment and compile the code. These commands should be run from your main project directory (e.g., `~/ExoHiggs/`).
+Follow these steps to set up the environment and compile the code. These commands should be run from your main project directory (e.g., `~/CMSSW_14_0_15/`).
 
 1.  **Set up the CMS Environment**:
     This command loads the necessary software and environment variables for CMSSW.
@@ -23,7 +23,7 @@ Follow these steps to set up the environment and compile the code. These command
 3.  **Navigate to the CMSSW Source Directory**:
     Go into the `src` directory of your CMSSW release area.
     ```bash
-    cd ExoHiggs/CMSSW_14_0_15/src
+    cd CMSSW_14_0_15/src
     ```
 
 4.  **Set up the Local CMSSW Environment**:
@@ -39,7 +39,7 @@ Follow these steps to set up the environment and compile the code. These command
     ```
 
 ---
-## Core Workflow: Running the Preprocessing
+## Running the Preprocessing
 
 After compiling, you can run the preprocessing to generate the flat ROOT trees.
 
