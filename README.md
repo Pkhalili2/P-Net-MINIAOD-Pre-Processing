@@ -100,3 +100,70 @@ hadd ak15_train_combined.root ak15_train_part1.root ak15_train_part2.root ...
     * **Usage**: It's designed for tasks like cleaning or stripping a file. Configure the input and output file paths in `runTTreeCopycfg.py` and execute it with `cmsRun`.
 
 * **`split.py`**: A post-processing script that provides an **alternative** way to split data. If you have one massive dataset, this script can be used to manually split that file into train/val/test sets. **It is not needed if you use the updated C++ producers.**
+
+---
+
+## Running Machine Learning Training (Example with ParticleNet)
+
+Once you have preprocessed your data into `train`, `val`, and `test` ROOT files, you can use them to train a machine learning model like ParticleNet, MLP, or DeepAK8. The following is an example workflow using the `weaver-benchmark` framework.
+
+### Step 1: Clone the ML Framework Repository
+First, you need to download the software for training the models. This example uses a framework that contains implementations for various taggers. The `--recursive` flag is important as it downloads necessary sub-modules.
+
+```bash
+git clone --recursive [https://github.com/colizz/weaver-benchmark.git](https://github.com/colizz/weaver-benchmark.git)
+cd weaver-benchmark
+```
+Note: Depending on the framework, you may need to perform additional setup steps, such as creating symbolic links or installing specific python packages. Refer to the framework's documentation at https://cms-ml.github.io/documentation/inference/particlenet.html.
+
+### Step 2: Configure Training Variables
+
+```bash
+# Set a prefix for all output file names
+PREFIX=particlenet_ak15
+
+# Specify the model and data configuration files
+# (Change these for different models like MLP, DeepAK8, etc.)
+MODEL_CONFIG=particlenet_pf.py
+DATA_CONFIG=pf_points_features.yaml
+
+# Set the path to your preprocessed ROOT files
+# (This is the directory containing your train/val/test files)
+PATH_TO_SAMPLES=/path/to/your/preprocessed/data/
+```
+### Step 3: Run Training
+This command starts the training process. It uses the training and validation datasets, loads the model and data configurations, and saves the trained model checkpoints and log files to an `output/` directory.
+
+```bash
+python weaver/train.py \
+    --data-train "${PATH_TO_SAMPLES}ak15_train.root" \
+    --data-val "${PATH_TO_SAMPLES}ak15_val.root" \
+    --data-config weaver/top_tagging/data/${DATA_CONFIG} \
+    --network-config weaver/top_tagging/networks/${MODEL_CONFIG} \
+    --model-prefix "output/${PREFIX}" \
+    --gpus "0,1" \
+    --batch-size 128 \
+    --start-lr 5e-3 \
+    --num-epochs 20 \
+    --optimizer ranger \
+    --fetch-by-file \
+    --num-workers 3 \
+    --log "output/${PREFIX}.train.log"
+```
+
+### Step 4: Run Inference (Prediction)
+After training is complete, this command runs the best-trained model on the test dataset. It loads the model state (_best_epoch_state.pt) and saves the network's predictions into a new ROOT file for performance evaluation (e.g., making ROC curves).
+
+```bash
+python weaver/train.py --predict \
+    --data-test "${PATH_TO_SAMPLES}ak15_test.root" \
+    --data-config weaver/top_tagging/data/${DATA_CONFIG} \
+    --network-config weaver/top_tagging/networks/${MODEL_CONFIG} \
+    --model-prefix "output/${PREFIX}_best_epoch_state.pt" \
+
+    --gpus "0,1" \
+    --batch-size 128 \
+    --num-workers 3 \
+    --predict-output "output/${PREFIX}_predict.root"
+```
+
