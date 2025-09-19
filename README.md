@@ -39,7 +39,7 @@ Follow these steps to set up the environment and compile the code. These command
     ```
 
 ---
-## ⚙Core Workflow: Running the Preprocessing
+## Core Workflow: Running the Preprocessing
 
 After compiling, you can run the preprocessing to generate the flat ROOT trees.
 
@@ -72,7 +72,7 @@ Execute the job using the `cmsRun` command. The command below is for AK15 jets; 
 
 ```bash
 cmsRun runFlatTree_ak15cfg.py
-
+```
 ### Step 3: Check the Output
 The process will produce three ROOT files in your current directory, split into an 80/10/10 ratio:
 * `ak15_train.root` (80% of events)
@@ -90,7 +90,7 @@ If you run the preprocessing job in batches on different sets of files, you will
 ```bash
 # Example: Combine all training files into one
 hadd ak15_train_combined.root ak15_train_part1.root ak15_train_part2.root ...
-
+```
 ### Other Utility Scripts
 
 * **`eventTest.py`**: A quick diagnostic script to count the number of events in the "Events" tree of any ROOT file.
@@ -99,4 +99,4 @@ hadd ak15_train_combined.root ak15_train_part1.root ak15_train_part2.root ...
 * **`SingleTreeExtractor.cc` & `runTTreeCopycfg.py`**: A CMSSW module that performs a simple, complete copy of the "Events" TTree from one ROOT file to another.
     * **Usage**: It's designed for tasks like cleaning or stripping a file. Configure the input and output file paths in `runTTreeCopycfg.py` and execute it with `cmsRun`.
 
-* **`split.py`**: A post-processing script that provides an **alternative** way to split data. If you used the original `AK8FlatTreeProducer` (which creates a single output file), this script can be used to manually split that file into train/val/test sets. **It is not needed if you use the updated C++ producers.**
+* **`split.py`**: A post-processing script that provides an **alternative** way to split data. If you have one massive dataset, this script can be used to manually split that file into train/val/test sets. **It is not needed if you use the updated C++ producers.**
