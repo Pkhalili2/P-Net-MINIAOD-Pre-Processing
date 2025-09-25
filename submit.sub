@@ -1,0 +1,18 @@
+universe              = vanilla
+executable            = run.sh
+arguments             = /hdfs/store/user/pkhalili2/ExoHiggs_AK15_Extract_PFNET/ $(ClusterId) $(ProcId)
+
+should_transfer_files = YES
+transfer_input_files  = run.sh, weaver-benchmark.tar.gz, pnet_env.tar.gz
+
+output = /nfs_scratch/pkhalili2/particlenet_outputs/job.$(ClusterId).$(ProcId).out
+error  = /nfs_scratch/pkhalili2/particlenet_outputs/job.$(ClusterId).$(ProcId).err
+log    = /nfs_scratch/pkhalili2/particlenet_outputs/job.$(ClusterId).log
+
+request_GPUs = 2
+request_CPUs = 8
+request_memory = 64000
++GPUJob = true
++MaxRuntime = 604800
+
+queue
